@@ -85,6 +85,27 @@ Board.prototype.addPlayerAtLocation = function(player) {
 
   var square = this.columns[player.location[0]][player.location[1]];
 
+  for(var i=0; i<square.length;i++) {
+    if(square[i] instanceof Trail) {
+    
+      if(square[i].player !== player) {
+        player.trigger("hit_trail", square[i]);
+      }
+
+      square.splice(i, 1);
+      continue;
+    }
+
+    if(square[i] instanceof Player) {
+
+      player.trigger("hit_player", square[i]);
+
+      alert(player.name + " killed " + square[i].name);
+    
+    }
+    
+  }
+
   square.push(player);
 
 }
@@ -105,6 +126,8 @@ var Player = function(name){
   self.board = null;
 
 }
+
+_.extend(Player.prototype, Backbone.Events);
 
 Player.prototype.move = function(direction){
 
