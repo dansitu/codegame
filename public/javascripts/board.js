@@ -10,7 +10,7 @@ var Board = function(){
 
   self.columns = [];
 
-  for(var r=0; r < self.size; r++) {
+  for(var c=0; c < self.size; c++) {
     self.columns.push(new Array(self.size));
   }
 
@@ -46,16 +46,16 @@ Board.prototype.movePlayer = function(player, direction){
 
   switch(direction) {
     case "up":
-      newCoords[0] = player.location[0] - 1;
+      newCoords[1] -= 1;
       break;
     case "right":
-      newCoords[1] = player.location[1] + 1;
+      newCoords[0] += 1;
       break;
     case "down":
-      newCoords[0] = player.location[0] + 1;
+      newCoords[1] += 1;
       break;
     case "left":
-      newCoords[1] = player.location[1] - 1;
+      newCoords[0] -= 1;
       break;
     default:
       throw "Invalid direction " + direction;
@@ -93,7 +93,7 @@ Board.prototype.addPlayerAtLocation = function(coords, player) {
 
   this.setCellContents(coords, player);
 
-  player.location = coords;
+  player.location = coords.slice();
 
 }
 
@@ -119,7 +119,20 @@ Board.prototype.getSurroundings = function(coords) {
   var down = downIndex < this.size ? this.getCellContents([coords[0],downIndex]) : null;
   var left = leftIndex > -1 ? this.getCellContents([leftIndex,coords[1]]) : null;
 
-  return [up, right, down, left]
+  var typeOf = function(object){
+    if(object instanceof Player) {
+      return "player";
+    }
+
+    if(object instanceof Trail) {
+      return "trail";
+    }
+
+    return null;
+  
+  }
+
+  return [typeOf(up), typeOf(right), typeOf(down), typeOf(left)]
 
 }
 

@@ -16,19 +16,19 @@ var BoardView = Backbone.View.extend({
 
     this.$el.empty();
 
-    for(var r=0; r<this.board.size; r++) {
+    for(var y=0; y<this.board.size; y++) {
     
       var row = $("<tr></tr>");
 
       this.$el.append(row);
 
-      for(var c=0; c<this.board.size; c++) {
+      for(var x=0; x<this.board.size; x++) {
         
         var cell = $("<td></td>");
 
         row.append(cell);
 
-        var item = this.board.getCellContents([r,c]);
+        var item = this.board.getCellContents([x,y]);
 
         if(item instanceof Player) {
           cell.append("<div class='player'>"+item.name+"</div>");
