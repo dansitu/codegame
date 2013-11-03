@@ -75,6 +75,14 @@ Board.prototype.movePlayer = function(player, direction){
       throw "Invalid direction " + direction;
   }
 
+  if(newCoords[0] < 0
+      || newCoords[0] >= this.size
+      || newCoords[1] < 0
+      || newCoords[1] >= this.size) {
+    player.trigger("out-of-bounds", direction);
+    return;
+  }
+
   player.location = newCoords;
 
   this.addPlayerAtLocation(player);
