@@ -7,6 +7,24 @@ block content
   .controls
     input(type='button', value='go')#go
 
+  pre(style='clear: both;').
+    function(player,move,radar){
+      var pindex = radar.indexOf('player');
+      if(pindex > -1) {
+        console.log('player is near, attacking');
+        player.attack();
+        return;
+      }
+      var tindex = radar.indexOf('trail');
+      if(tindex > -1) {
+        console.log('trail is near, evading');
+        player.evade();
+        return;
+      }
+      player.randomStep();
+    }
+
+
 block scripts
   script(src='/javascripts/models.js')
   script(src='/javascripts/board.js')
