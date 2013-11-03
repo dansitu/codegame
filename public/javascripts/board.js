@@ -138,10 +138,17 @@ Board.prototype.getSurroundings = function(coords) {
 
 Board.prototype.playTurn = function(){
 
+  // Make sure neither player is halted
+  this.players.forEach(function(player){
+    player.halted = false;
+  });
+
   // this.moves moves per player
   for(var move = 1; move <= this.moves*2; move++) {
     var mod = move%2;
-    this.players[mod].makeMove(mod ? ((move-mod)/2)+1 : move/2);
+    var player = this.players[mod];
+    if(player.halted) continue;
+    player.makeMove(mod ? ((move-mod)/2)+1 : move/2);
   }
 
 }
@@ -157,6 +164,11 @@ var Player = function(name){
   self.board = null;
 
   self.code = new CodeModel();
+
+  self.halted = false;
+
+  self.on('hit_trail', function(){ self.halted = true; });
+  self.on('hit_player', function(){ self.halted = true; });
 
 }
 
