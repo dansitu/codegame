@@ -1,0 +1,22 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+table.game-table td {
+  height: 40px;
+  width: 40px;
+  background-color: #000;
+}
+table.game-table .player {
+  height: 100%;
+  width: 100%;
+  background-color: #f00;
+}
+table.game-table .trail {
+  height: 100%;
+  width: 100%;
+  background-color: #00f;
+}
