@@ -23,11 +23,11 @@ table.game-table .trail {
   width: 100%;
   background-color: #00f;
 }
-.player-input {
+.code-area {
   float: left;
   width: 50%;
 }
-.player-input textarea {
+.code-area textarea {
   width: 100%;
   height: 100px;
 }

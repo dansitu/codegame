@@ -2,14 +2,13 @@ extends layout
 
 block content
   #game
-  .player-input#player1
-    textarea
-  .player-input#player2
-    textarea
+  #player1
+  #player2
   .controls
     input(type='button', value='go')#go
 
 block scripts
+  script(src='/javascripts/models.js')
   script(src='/javascripts/board.js')
   script(src='/javascripts/views.js')
   script(src='/javascripts/main.js')

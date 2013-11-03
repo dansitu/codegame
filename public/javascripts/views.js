@@ -49,3 +49,30 @@ var BoardView = Backbone.View.extend({
   }
 
 });
+
+var CodeView = Backbone.View.extend({
+  className: "code-area",
+
+  model: CodeModel,
+
+  events: {
+    "input textarea": "updateSource"
+  },
+
+  initialize: function(){
+  },
+
+  render: function(){
+
+    this.$el.html("<textarea>"+this.model.get("source")+"</textarea>");
+
+    return this;
+  
+  },
+
+  updateSource: function(e){
+    console.log("updating source");
+    this.model.set("source", this.$('textarea').val());
+  }
+
+});
