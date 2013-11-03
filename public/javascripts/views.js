@@ -28,17 +28,13 @@ var BoardView = Backbone.View.extend({
 
         row.append(cell);
 
-        var contents = this.board.getCellContents([r,c]);
+        var item = this.board.getCellContents([r,c]);
 
-        contents.forEach(function(item){
-        
-          if(item instanceof Player) {
-            cell.append("<div class='player'>"+item.name+"</div>");
-          } else if(item instanceof Trail) {
-            cell.append("<div class='trail'>"+item.player.name+"</div>");
-          }
-        
-        });
+        if(item instanceof Player) {
+          cell.append("<div class='player'>"+item.name+"</div>");
+        } else if(item instanceof Trail) {
+          cell.append("<div class='trail'>"+item.player.name+"</div>");
+        }
 
       }
 

@@ -11,11 +11,7 @@ var Board = function(){
   self.columns = [];
 
   for(var r=0; r < self.size; r++) {
-    var row = [];
-    for(var c=0;c<self.size;c++) {
-      row.push([]);
-    }
-    self.columns.push(row);
+    self.columns.push(new Array(self.size));
   }
 
 }
@@ -36,25 +32,15 @@ Board.prototype.addPlayer = function(player){
     throw "Too many players already."
   }
 
-  player.location = playerLocation;
-
   self.players.push(player);
 
   player.board = self;
 
-  self.addPlayerAtLocation(player);
+  self.addPlayerAtLocation(playerLocation, player);
 
 }
 
 Board.prototype.movePlayer = function(player, direction){
-
-  var square = this.columns[player.location[0]][player.location[1]];
-
-  var index = square.indexOf(player);
-
-  square.splice(index, 1);
-
-  square.push(new Trail(player));
 
   var newCoords = player.location.slice();
 
@@ -83,40 +69,31 @@ Board.prototype.movePlayer = function(player, direction){
     return;
   }
 
-  player.location = newCoords;
+  this.setCellContents(player.location, new Trail(player));
 
-  this.addPlayerAtLocation(player);
+  this.addPlayerAtLocation(newCoords, player);
 
   this.trigger("update");
 
 }
 
-Board.prototype.addPlayerAtLocation = function(player) {
+Board.prototype.addPlayerAtLocation = function(coords, player) {
 
-  var square = this.columns[player.location[0]][player.location[1]];
+  var square = this.getCellContents(coords);
 
-  for(var i=0; i<square.length;i++) {
-    if(square[i] instanceof Trail) {
-    
-      if(square[i].player !== player) {
-        player.trigger("hit_trail", square[i]);
-      }
-
-      square.splice(i, 1);
-      continue;
-    }
-
-    if(square[i] instanceof Player) {
-
-      player.trigger("hit_player", square[i]);
-
-      alert(player.name + " killed " + square[i].name);
-    
-    }
-    
+  if(square instanceof Trail
+    && square.player !== player) {
+    player.trigger("hit_trail", square);
   }
 
-  square.push(player);
+  if(square instanceof Player) {
+    player.trigger("hit_player", square);
+    alert(player.name + " killed " + square.name);
+  }
+
+  this.setCellContents(coords, player);
+
+  player.location = coords;
 
 }
 
@@ -124,6 +101,10 @@ Board.prototype.getCellContents = function(coords) {
 
   return this.columns[coords[0]][coords[1]];
 
+}
+
+Board.prototype.setCellContents = function(coords, contents) {
+  this.columns[coords[0]][coords[1]] = contents;
 }
 
 Board.prototype.getSurroundings = function(coords) {
