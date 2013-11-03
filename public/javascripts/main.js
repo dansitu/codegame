@@ -12,3 +12,7 @@ board.addPlayer(minicat);
 var view = new BoardView(board);
 
 $("#game").append(view.render().$el);
+
+$("#go").click(function(){
+  board.playTurn();
+});

@@ -4,6 +4,8 @@ var Board = function(){
 
   self.size = 8;
 
+  self.moves = 4;
+
   self.players = [];
 
   self.columns = [];
@@ -113,6 +115,22 @@ Board.prototype.addPlayerAtLocation = function(player) {
 Board.prototype.getCellContents = function(coords) {
 
   return this.columns[coords[0]][coords[1]];
+
+}
+
+Board.prototype.getSurroundings = function(coords) {
+
+  return []
+
+}
+
+Board.prototype.playTurn = function(){
+
+  // this.moves moves per player
+  for(var move = 1; move <= this.moves*2; move++) {
+    this.players[move%2].makeMove();
+  }
+
 }
 
 var Player = function(name){
@@ -132,6 +150,21 @@ _.extend(Player.prototype, Backbone.Events);
 Player.prototype.move = function(direction){
 
   this.board.movePlayer(this, direction);
+
+}
+
+Player.prototype.makeMove = function(){
+
+  var moveParams = {
+    surroundings: this.board.getSurroundings(this.location)
+  };
+
+  // Parse move code
+  var moveCode = prompt("Give me a function, " + this.name, "function(player,u,r,d,l){ player.move('down'); }");
+
+  var moveFunc = eval("("+moveCode+")");
+
+  moveFunc(this, moveParams);
 
 }
 
