@@ -168,6 +168,23 @@ Player.prototype.move = function(direction){
 
 }
 
+Player.prototype.evade = function(){
+
+  var surroundings = this.board.getSurroundings(this.location);
+
+  if(surroundings[0] === 'player') {
+    this.move('down');
+  } else if(surroundings[1] === 'player') {
+    this.move('left');
+  } else if(surroundings[2] === 'player') {
+    this.move('up');
+  } else if(surroundings[3] === 'player') {
+    this.move('right');
+  }
+  return;
+
+}
+
 Player.prototype.makeMove = function(moveNumber){
 
   var surroundingsArray = this.board.getSurroundings(this.location);
