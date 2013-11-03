@@ -87,6 +87,7 @@ Board.prototype.addPlayerAtLocation = function(coords, player) {
   }
 
   if(square instanceof Player) {
+    square.trigger("hit_player", player);
     player.trigger("hit_player", square);
     alert(player.name + " killed " + square.name);
   }
@@ -119,13 +120,15 @@ Board.prototype.getSurroundings = function(coords) {
   var down = downIndex < this.size ? this.getCellContents([coords[0],downIndex]) : null;
   var left = leftIndex > -1 ? this.getCellContents([leftIndex,coords[1]]) : null;
 
+  var self = this;
   var typeOf = function(object){
     if(object instanceof Player) {
       return "player";
     }
 
     if(object instanceof Trail) {
-      return "trail";
+      var me = self.getCellContents(coords);
+      return object.player === me ? null : "trail";
     }
 
     return null;
@@ -184,16 +187,41 @@ Player.prototype.evade = function(){
 
   var surroundings = this.board.getSurroundings(this.location);
 
-  if(surroundings[0] === 'player') {
+  if(surroundings[0] === 'trail') {
     this.move('down');
-  } else if(surroundings[1] === 'player') {
+  } else if(surroundings[1] === 'trail') {
     this.move('left');
-  } else if(surroundings[2] === 'player') {
+  } else if(surroundings[2] === 'trail') {
     this.move('up');
-  } else if(surroundings[3] === 'player') {
+  } else if(surroundings[3] === 'trail') {
     this.move('right');
   }
   return;
+
+}
+
+Player.prototype.attack = function(){
+
+  var surroundings = this.board.getSurroundings(this.location);
+
+  if(surroundings[0] === 'player') {
+    this.move('up');
+  } else if(surroundings[1] === 'player') {
+    this.move('right');
+  } else if(surroundings[2] === 'player') {
+    this.move('down');
+  } else if(surroundings[3] === 'player') {
+    this.move('left');
+  }
+  return;
+
+}
+
+Player.prototype.randomStep = function(){
+
+  var motions = ['up', 'down', 'left', 'right'];
+  var random = Math.floor(Math.random() * (3 + 1));
+  this.move(motions[random]);
 
 }
 
