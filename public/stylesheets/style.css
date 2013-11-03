@@ -5,6 +5,9 @@ body {
 a {
   color: #00b7ff;
 }
+table.game-table {
+  float: left;
+}
 table.game-table td {
   height: 40px;
   width: 40px;
@@ -19,4 +22,15 @@ table.game-table .trail {
   height: 100%;
   width: 100%;
   background-color: #00f;
+}
+.player-input {
+  float: left;
+  width: 50%;
+}
+.player-input textarea {
+  width: 100%;
+  height: 100px;
+}
+.controls {
+  float: left;
 }
