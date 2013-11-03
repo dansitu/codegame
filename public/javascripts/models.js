@@ -1,7 +1,7 @@
 var CodeModel = Backbone.Model.extend({
 
   defaults: {
-    source: "function(player,move,up,right,down,left){\n\n\n}"
+    source: "function(player,move,radar){\n\n\n}"
   },
 
   getFunction: function(){

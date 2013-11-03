@@ -128,7 +128,17 @@ Board.prototype.getCellContents = function(coords) {
 
 Board.prototype.getSurroundings = function(coords) {
 
-  return []
+  var upIndex = coords[1] - 1;
+  var rightIndex = coords[0] + 1;
+  var downIndex = coords[1] + 1;
+  var leftIndex = coords[0] - 1;
+
+  var up = upIndex > -1 ? this.getCellContents([coords[0],upIndex]) : null;
+  var right = rightIndex < this.size ? this.getCellContents([rightIndex,coords[1]]) : null;
+  var down = downIndex < this.size ? this.getCellContents([coords[0],downIndex]) : null;
+  var left = leftIndex > -1 ? this.getCellContents([leftIndex,coords[1]]) : null;
+
+  return [up, right, down, left]
 
 }
 
@@ -168,7 +178,7 @@ Player.prototype.makeMove = function(moveNumber){
 
   var surroundingsArray = this.board.getSurroundings(this.location);
 
-  var parameters = [this, moveNumber].concat(surroundingsArray);
+  var parameters = [this, moveNumber, surroundingsArray];
 
   var result = this.code.execute(parameters);
 
